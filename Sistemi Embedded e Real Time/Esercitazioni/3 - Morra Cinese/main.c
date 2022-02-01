@@ -21,9 +21,7 @@ char *risultati[3] = {"PARI", "GIOCATORE 1", "GIOCATORE 2"};
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <time.h>
 
 /* Struct per la Gestione del Gioco */
 struct morra_cinese_t{
