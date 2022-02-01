@@ -12,9 +12,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <time.h>
 
 #define NUMERO_GIOCATORI    2
 
