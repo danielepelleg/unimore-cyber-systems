@@ -1,0 +1,5 @@
+# La Corsa - Esame 02.02.2022
+
+In uno stadio ci sono N corridori pronti a partire sulla pista dei 100 mt. Al via dell'arbitro, tutti i corridori iniziano a correre. Dopo alcuni secondi tutti i corridori arrivano al traguardo. Quando l'ultimo corridore raggiunge il traguardo l'arbitro annuncia il primo e l'ultimo classificato.
+
+Il sistema è modellato con un thread per ogni corridore, ed un thread per l'arbitro. Il corridore arriva al punto di partenza ed aspetta il via dell'arbitro. Quando l'arbitro da il via, il corridore corre ed arriva al traguardo. L'arbitro arriva ed attende che tutti i corridori si siano posizionati. Dopo di che da il via alla gara, e si mette in attesa dell'arrivo dell'ultimo corridore. Non appena l'ultimo corridore arriva, l'arbitro comunica il primo e l'ultimo classificato della gara.
