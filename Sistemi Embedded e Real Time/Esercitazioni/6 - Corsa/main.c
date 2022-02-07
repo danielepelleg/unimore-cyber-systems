@@ -85,7 +85,7 @@ void arbitro_via(struct corsa_t *corsa){
     pthread_mutex_lock(&corsa->mutex);
 
     printf("A : VIA!\n");
-    pthread_cond_broadcast(&corsa->attesa_del_via);   // <-- nella bella potrei aver erroneamente passato il mutex come parametro
+    pthread_cond_broadcast(&corsa->attesa_del_via);
 
     pthread_mutex_unlock(&corsa->mutex);
 }
@@ -118,10 +118,7 @@ void arbitro_risultato(struct corsa_t *corsa){
     // Attendi la fine del Gioco
     while(corsa->corridori_arrivati != N_CORRIDORI){
         printf("A : Attendo il risultato!");
-        pthread_cond_wait(&corsa->attesa_arbitro, &corsa->mutex);  // <-- nella bella potrei aver dimenticato di aggiungere questa riga di codice, necessaria affinchè
-                                                                   //              il thread arbitro rimanga in attesa della fine della competizione.
-                                                                   //     Anche togliendo questa riga, l'esecuzione non da problemi perchè i corridori presentano una usleep() che consente loro
-                                                                   // di accedere per primi al mutex, mentre il thread arbitro una sleep(). Togliendo quest'ultima sleep il problema risulterebbe evidente.
+        pthread_cond_wait(&corsa->attesa_arbitro, &corsa->mutex);
     }
     printf("A : Primo Classificato - Corridore %d! \n", corsa->primo_classificato);
     printf("A : Ultimo Classificato - Corridore %d! \n", corsa->ultimo_classificato);
@@ -151,8 +148,7 @@ void *arbitro(){
     return 0;
 }
 
-int main()
-{
+int main(){
     pthread_t arbitro_t, *corridori_t;
 
     pthread_attr_t p_attr;
