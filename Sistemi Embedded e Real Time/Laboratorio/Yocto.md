@@ -6,15 +6,15 @@
 
 # Yocto
 
-Yocto è un *set di strumenti* che generano il sistema finale (*distribuzione* Linux) a partire da un file di configurazione. Nel caso di studio si è generato un sistema per un emulatore con un'architettura a 64 bit: il sistema è stato testato con i comandi che fornisce Yocto stesso, `run qemu` è uno di questi.
+Yocto è un *set di strumenti* utilizzato per generare il sistema finale (*distribuzione* Linux) a partire da un file di configurazione. Garantisce un alto livello di personalizzazione del sistema e di flessibilità, a discapita di una ripida curva d'apprendimento e tempi di build non sempre contenuti. Nel caso di studio si è generato un sistema per un emulatore con un'architettura a 64 bit: il sistema è stato testato con i comandi che fornisce Yocto stesso, `runqemu` è uno di questi.
 
 ## File di Configurazione
 
-La distribuzione finale si genera a partire da un ***file di configurazione***. Il file di configurazione si trova in `/poky/build/conf/local.conf` e consiste in un *insieme di variabili*. 
+La distribuzione finale si genera a partire da un ***file di configurazione***. Il file di configurazione si trova in `/poky/build/conf/local.conf` e consiste in un *insieme di variabili*. **Poky** è il nome del *sistema di riferimento*.
 
 ### Bitbake
 
-Lo stesso comando `bitbake core-image-minimal`, che genera tutto il sistema, non è altro che una ricetta (*macro* per generare una serie di pacchetti): si chiede al sistema *se esiste una ricetta per generare il pacchetto* specificato. Viene eseguito il comando `bitbake` per ogni pacchetto definito in `core-image-minimal` (insieme di pacchetti). Il `[TARGET]` specificato in seguito al comando `bitbake` può essere una libreria, un'applicazione o un emulatore. Il comando crea un *sistema minimale*, con la sola interfaccia a linea di comando. Solitamente viene utilizzato come ***configurazione di pacchetti di base*** per aggiungere nuovi pacchetti alla distribuzione.
+**Bitbake** è il ***build engine***, si può considerare come un task scheduler. Lo stesso comando `bitbake core-image-minimal`, che genera tutto il sistema, non è altro che una ricetta (*macro* per generare una serie di pacchetti): si chiede al sistema *se esiste una ricetta per generare il pacchetto* specificato. Viene eseguito il comando `bitbake` per ogni pacchetto definito in `core-image-minimal` (insieme di pacchetti). Il `[TARGET]` specificato in seguito al comando `bitbake` può essere una libreria, un'applicazione o un emulatore. Il comando crea un *sistema minimale*, con la sola interfaccia a linea di comando. Solitamente viene utilizzato come ***configurazione di pacchetti di base*** per aggiungere nuovi pacchetti alla distribuzione.
 
 #### Aggiungere un Pacchetto
 
@@ -36,7 +36,7 @@ Tra i pacchetti da installare è possibile che ci siano pacchetti girano non sul
 
 ## Ricetta
 
-La ricetta è un *file* con estensione `.bb`. È possibile trovarne una in `/poky/build/meta-example/recipes-example/example`. Si tratta di un **file di testo** che definisce come ***scaricare***, ***compilare*** e ***installare*** un software. Un gestore di pacchetti come `apt` si limita a scaricare *direttamente i binari* (non i sorgenti) e li installa, saltando lo step di compilazione. Le ricette sono inserite all'interno di layer (cartelle) nominate come `meta-[NAME]`, dove vengono raggruppate in altre cartelle in base al tema (utilizzo o tipologia): qui ciascuna ricetta deve poi essere inserita in una cartella avente lo *stesso nome della ricetta*.
+La ricetta è un *file* con estensione `.bb`: è un insieme di ***metadati*** che specificano a bitbake la *configurazione*, come *fare la build*, e come installare un *software*. È possibile trovarne una in `/poky/build/meta-example/recipes-example/example`. Si tratta di un **file di testo** che definisce come ***scaricare***, ***compilare*** e ***installare*** un software. Un gestore di pacchetti come `apt` si limita a scaricare *direttamente i binari* (non i sorgenti) e li installa, saltando lo step di compilazione. Le ricette sono inserite all'interno di layer (cartelle) nominate come `meta-[NAME]`, dove vengono raggruppate in altre cartelle in base al tema (utilizzo o tipologia): qui ciascuna ricetta deve poi essere inserita in una cartella avente lo *stesso nome della ricetta*.
 
 > Es. <u>Nome e Posizione di una Ricetta</u>
 >
@@ -68,7 +68,7 @@ Quando ricercando un pacchetto il suo nome lo si trova preceduto da `nativesdk-[
 
 ### Layer
 
-Per ottenere **la lista di layer presenti sul sistema** si deve lanciare il comando nel percorso `/poky/build`:
+Il layer è un ***insieme di ricette***. Per ottenere **la lista di layer presenti sul sistema** si deve lanciare il comando nel percorso `/poky/build`:
 
 ```bash
 <$ bitbake-layers show-layers
