@@ -1,8 +1,31 @@
-
-
-
-
-[TOC]
+- [Yocto](#yocto)
+	- [File di Configurazione](#file-di-configurazione)
+		- [Bitbake](#bitbake)
+			- [Aggiungere un Pacchetto](#aggiungere-un-pacchetto)
+				- [Applicativi sul Sistema Host](#applicativi-sul-sistema-host)
+	- [Ricetta](#ricetta)
+		- [Pacchetti](#pacchetti)
+		- [Layer](#layer)
+			- [Installare un Layer](#installare-un-layer)
+				- [Scaricare un Layer Esistente](#scaricare-un-layer-esistente)
+				- [Creare un Layer](#creare-un-layer)
+			- [Aggiungere il Layer](#aggiungere-il-layer)
+				- [File di Configurazione](#file-di-configurazione-1)
+				- [Comando `bash`](#comando-bash)
+		- [Build della Ricetta](#build-della-ricetta)
+	- [Creazione di una Ricetta Personalizzata](#creazione-di-una-ricetta-personalizzata)
+		- [Applicazione in C](#applicazione-in-c)
+		- [Ricetta](#ricetta-1)
+			- [Compilazione: `do_compile(){}`](#compilazione-do_compile)
+			- [Installazione: `do_install(){}`](#installazione-do_install)
+			- [Aggiungere Ricetta a bitbake](#aggiungere-ricetta-a-bitbake)
+		- [Testare il Pacchetto](#testare-il-pacchetto)
+	- [Modifica al Kernel Linux](#modifica-al-kernel-linux)
+		- [Aggiunta di una Stringa](#aggiunta-di-una-stringa)
+		- [Creazione Patch](#creazione-patch)
+			- [Aggiunta della Patch](#aggiunta-della-patch)
+		- [Estensione della Ricetta](#estensione-della-ricetta)
+			- [Creazione Estensione della Ricetta](#creazione-estensione-della-ricetta)
 
 # Yocto
 
@@ -255,7 +278,7 @@ user@iot:~/poky/meta-example/recipes-kernel/linux
 
 In questo percorso si deve creare la cartella `/files` e al suo interno si inserisce la patch creata `hello.patch`.
 
-### Ricetta
+### Estensione della Ricetta
 
 Yocto mette a disposizione un sistema per l'***estensione delle ricette***. Si crea una ricetta che *estende una ricetta genitore*. Una volta creata questa estensione, tutto ciò che viene aggiunto al suo interno viene utilizzato dalla ricetta genitore. Per aggiungere una patch da fare applicare a Yocto, prima della fase di compilazione, è necessario aggiungere all'interno dei file sorgente il file con estensione `.patch`, è a questo che serve l'estensione della ricetta.
 
