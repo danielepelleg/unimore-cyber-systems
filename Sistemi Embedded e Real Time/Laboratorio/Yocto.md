@@ -29,7 +29,7 @@
 
 # Yocto
 
-Yocto è un *set di strumenti* utilizzato per generare il sistema finale (*distribuzione* Linux) a partire da un file di configurazione. Garantisce un alto livello di personalizzazione del sistema e di flessibilità, a discapita di una ripida curva d'apprendimento e tempi di build non sempre contenuti. Nel caso di studio si è generato un sistema per un emulatore con un'architettura a 64 bit: il sistema è stato testato con i comandi che fornisce Yocto stesso, `runqemu` è uno di questi.
+Yocto è un *set di strumenti* utilizzato per generare il sistema finale (*distribuzione* Linux) a partire da un file di configurazione. Garantisce un alto livello di *personalizzazione* del sistema e di *flessibilità*, a discapito di una *ripida curva d'apprendimento* e *tempi di build* non sempre contenuti. Nel caso di studio si è generato un sistema per un emulatore con un'architettura a 64 bit: il sistema è stato testato con i comandi che fornisce Yocto stesso, `runqemu` è uno di questi.
 
 ## File di Configurazione
 
@@ -51,7 +51,7 @@ Notare lo *spazio presente appena aperte le virgolette*. Una volta definito il p
 
 I termini ***pacchetto o ricetta*** sono equivalenti: è possibile pensare a un pacchetto come a qualcosa da *scaricare*, *compilare* ed eventualmente *installare sul sistema* (es. *OpenSSH*, *Kernel Linux*, *Emulatore Qemu* che deve girare non sulla board ma sulla macchina).
 
-Yocto è uno strumento che non genera solo un binario o un intero sistema che esegue su una board, ma genera anche degli applicativi che girano sulla macchina. Durante la build ci sono alcuni pacchetti che impiegano molto tempo per compilare: il kernel Linux (*linux yocto*) *Qemu*.
+Yocto è uno strumento che non genera solo un binario o un intero sistema che esegue su una board, ma genera anche degli applicativi che girano sulla macchina. Durante la build ci sono alcuni pacchetti che impiegano molto tempo per compilare: come il kernel Linux (*linux yocto*) e *Qemu*.
 
 ##### Applicativi sul Sistema Host
 
@@ -59,7 +59,7 @@ Tra i pacchetti da installare è possibile che ci siano pacchetti girano non sul
 
 ## Ricetta
 
-La ricetta è un *file* con estensione `.bb`: è un insieme di ***metadati*** che specificano a bitbake la *configurazione*, come *fare la build*, e come installare un *software*. È possibile trovarne una in `/poky/build/meta-example/recipes-example/example`. Si tratta di un **file di testo** che definisce come ***scaricare***, ***compilare*** e ***installare*** un software. Un gestore di pacchetti come `apt` si limita a scaricare *direttamente i binari* (non i sorgenti) e li installa, saltando lo step di compilazione. Le ricette sono inserite all'interno di layer (cartelle) nominate come `meta-[NAME]`, dove vengono raggruppate in altre cartelle in base al tema (utilizzo o tipologia): qui ciascuna ricetta deve poi essere inserita in una cartella avente lo *stesso nome della ricetta*.
+La ricetta è un *file* con estensione `.bb`: è un insieme di ***metadati*** che specificano a bitbake la *configurazione*, come *fare la build*, e come installare un *software*. È possibile trovarne una in `/poky/build/meta-example/recipes-example/example`. Si tratta di un **file di testo** che definisce come ***scaricare***, ***compilare*** e ***installare*** un software. Un gestore di pacchetti come `apt` si limita a scaricare *direttamente i binari* (non i sorgenti) e li installa, saltando lo step di compilazione. Le ricette sono inserite all'interno di layer (cartelle) nominate come `meta-[NAME]`, dove vengono raggruppate in altre cartelle in base alla tematica (di utilizzo o tipologia): qui ciascuna ricetta deve poi essere inserita in una cartella avente lo *stesso nome della ricetta*.
 
 > Es. <u>Nome e Posizione di una Ricetta</u>
 >
@@ -77,7 +77,7 @@ Nella maggior parte dei casi **per scaricare** i sorgenti all'interno di una ric
 SRC_URI = "git://github.com/file/file.git;branch=master;protocol=https"
 ```
 
-In seguito, nella ricetta vengono utilizzati gli *autotools* per le fasi successive della ricetta: si tratta di *strumenti* sviluppati da GNU Software che aiutano nella configurazione e nella compilazione di un generico applicativo scritto in C/C++. Infine nel file viene specificato il *come compilare il pacchetto* `do_compile:append:class-native(){}` e il come *installarlo* `do_install:append:class-native(){}`. L'importante è che in una ricetta siano presenti tutte e tre le fasi di scaricamento, compilazione e installazione: il modo in cui queste tre vengono fatte cambia da ricetta a ricetta. Nel caso si voglia inserire uno *script in linguaggio Python* è opportuno specificare Python come dipendenza: poiché uno script Python viene interpretato e non compilato, la parte di compilazione sarà definita ma risulterà nulla, ovvero non presenterà istruzioni al suo interno.
+In seguito, nella ricetta vengono utilizzati gli *autotools* per le fasi successive della ricetta: si tratta di *strumenti* sviluppati da GNU Software che aiutano nella configurazione e nella compilazione di un generico applicativo scritto in C/C++. Infine nel file viene specificato *come compilare il pacchetto* `do_compile:append:class-native(){}` e il come *installarlo* `do_install:append:class-native(){}`. L'importante è che in una ricetta siano presenti tutte e tre le fasi di scaricamento, compilazione e installazione: il modo in cui queste tre vengono fatte cambia da ricetta a ricetta. Nel caso si voglia inserire uno *script in linguaggio Python* è opportuno specificare Python come dipendenza: poiché uno script Python viene interpretato e non compilato, la parte di compilazione sarà definita ma risulterà nulla, ovvero non presenterà istruzioni al suo interno.
 
 ### Pacchetti
 
@@ -189,7 +189,7 @@ do_install() {
 }
 ```
 
-L'ordine delle variabili non importa, tuttavia all'inizio della ricetta è bene mettere i *metadati*: `DESCRIZIONE`, `LICENZA`, `CHECKSUM`. Il `SRC_URI` definisce la posizione del file nella rete: può ***prendere in ingresso più file separati da uno spazio***. Con una configurazione di default il sistema grazie alla sintassi `file://` va a cercare i file in delle posizioni specifiche: queste posizioni sono riconosciute dalla *directory **`/files`*** all'interno della cartella avente il nome della ricetta:
+L'ordine delle variabili non importa, tuttavia all'inizio della ricetta è bene mettere i *metadati*: `DESCRIZIONE`, `LICENZA`, `CHECKSUM`. La **licenza** non è indispensabile ma è buona pratica metterla: se non la si inserisce si toglie anche il relativo checksum e *Yocto ne fornisce una di default*. Il `SRC_URI` definisce la posizione del file nella rete: può ***prendere in ingresso più file separati da uno spazio***. Con una configurazione di default il sistema grazie alla sintassi `file://` va a cercare i file in delle posizioni specifiche: queste posizioni sono riconosciute dalla *directory **`/files`*** all'interno della cartella avente il nome della ricetta:
 
 ```bash
 ../meta-example/${NOME_RICETTA}/files/${NOME_FILE}.c
