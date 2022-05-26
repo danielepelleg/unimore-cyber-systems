@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% comment %}
+    Main Page of Django Site
+{% endcomment %}
+{% block head %}
+    <title>
+        Django MySite
+    </title>
+{% endblock %}
+{% block body %}
+    <header>Django MySite</header>
+    <section>
+        <p>Welcome to Django MySite. Please click <a href=" {% url 'portal:welcome' %} ">here</a> to log into our Web Portal.</p>
+        <p><a href="{% url 'portal:register' %}">Registration</a></p>
+    </section>
+{% endblock %}
