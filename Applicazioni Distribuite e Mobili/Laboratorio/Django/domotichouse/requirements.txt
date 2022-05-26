@@ -1,0 +1,3 @@
+django
+python-dotenv
+Pillow

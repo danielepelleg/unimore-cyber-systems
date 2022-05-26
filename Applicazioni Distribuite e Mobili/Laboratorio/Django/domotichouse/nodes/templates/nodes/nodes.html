@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Configuration Overview</title>
+</head>
+<body>
+    <form action="" method="post">
+        {{ formset.management_form }}
+        {% csrf_token %}
+        <ul>
+            {% for form in formset %}
+                <li>
+                    {{ form }}
+                    {% for cap, detail in capabilities.items %}
+                        <a href="{{ form.initial.id }}/{{ cap }}">Edit {{cap}}</a>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" name="save" value="Submit">
+    </form>
+</body>
+</html>
