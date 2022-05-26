@@ -134,7 +134,7 @@ Using the shell:
 > from django.contrib.auth import authenticate
 > from django.contrib.contenttypes.models import ContentType
 > from django.contrib.auth.models import Permission
-> user = autheticate(username='', password='')
+> user = authenticate(username='', password='')
 > content_type = ContentType.objects.get(model='$MODEL_NAME')
 > permission1 = Permission.objects.get(content_type = content_type, codename = 'add_$MODEL_NAME')
 > permission2 = Permission.objects.get(content_type = content_type, codename = 'change_$MODEL_NAME')
