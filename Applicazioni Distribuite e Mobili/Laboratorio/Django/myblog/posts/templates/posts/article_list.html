@@ -1,0 +1,15 @@
+{% if latest_post_list %}
+<ul>
+    <form>
+        {% for post in latest_post_list %}
+        <li>
+            {{ post.pubblication_date }}
+            <br>
+            <a href="{% url 'posts:detail' author year month post.id %}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+    </form>
+</ul>
+{% else %}
+<p>No posts are available.</p>
+{% endif %}

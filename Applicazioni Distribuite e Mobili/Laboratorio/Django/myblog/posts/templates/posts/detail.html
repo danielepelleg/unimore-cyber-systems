@@ -1,0 +1,12 @@
+<h1>Title: {{ article }}</h1>
+Content: {{ article.content }}
+<br>
+Pubblication Date: {{ article.pubblication_date }}
+<br>
+Authors:
+<ul>
+{% for author in article.author.all  %}
+    <li> {{author}} </li>
+{% endfor %}
+</ul>
+<a href="{% url 'posts:posts_list' author year month %}"> Back </a>
