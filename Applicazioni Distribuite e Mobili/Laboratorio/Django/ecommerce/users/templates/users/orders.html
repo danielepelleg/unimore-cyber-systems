@@ -1,0 +1,19 @@
+{% if user_orders %}
+<h1>{{user.username}}'s Orders:</h1>
+<ul>
+    <form >
+        {% for order in user_orders %}
+        <li>
+            <a href=" {% url 'users:order_detail' user.id order.id %} ">{{order.created_at}}</a>
+            <br>
+            Status: {{order.status}}
+            <br> 
+            Total: {{order.total}} €
+            <br><br>
+        </li>
+        {% endfor %}
+    </form>
+</ul>
+{% else %}
+<p>No orders done.</p>
+{% endif %}

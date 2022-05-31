@@ -1,0 +1,7 @@
+<ul>
+    <li><a href=" {% url 'products:product_list' %} ">Products List</a></li>
+    <br>
+    <li><a href=" {% url 'users:cart_detail' user.id %} ">My Cart</a></li>
+    <br>
+    <li><a href=" {% url 'users:orders' user.id %} ">My Orders</a></li>
+</ul>

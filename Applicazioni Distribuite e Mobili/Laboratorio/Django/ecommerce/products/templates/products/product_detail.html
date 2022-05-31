@@ -1,0 +1,32 @@
+<h1>{{product}}</h1>
+<br>
+<img src="{{ product.image.url }}" style="max-height:300px;max-width: 300px">
+<br>
+<ul>
+    <li>
+        Category: {{product.get_category_display}}
+    </li>
+    <br>
+    <li>
+        Pubblication Date: {{product.pubblication_date}}
+    </li>
+    <br>
+    <li>
+        Price: {{product.price}} €
+    </li>
+    <li>
+        Quantity: {{product.quantity}}
+    </li>
+</ul>
+{% if user.is_authenticated %}
+    <form action=" {% url 'products:purchase' product.id %} " method="post">
+        {% csrf_token %}
+        <label for="quantity">Quantity (between 1 and {{product.quantity}}):</label>
+        <input type="number" name="quantity" min="1" value=1 max="{{product.quantity}}">
+        <br>
+        <button type="submit">Acquista</button>
+    </form>
+    <br>
+{% endif %}
+
+<a href=" {% url 'products:product_list' %} ">Back</a>

@@ -1,0 +1,18 @@
+<h1>{{user}}'s Cart</h1>
+<ul>
+{% for key,value in products.items %}
+    <li>
+        {{key}}     (x{{value}})
+    </li>
+{% endfor %}
+</ul>
+Created at: {{cart.created_at}}
+<br><br>
+Total: {{cart.total_cost}} €
+<br><br>
+<form action=" {% url 'users:checkout' user.id %} " method="post">
+    {% csrf_token %}
+    <button type="submit">Order</button>
+</form>
+<br><br>
+<a href="{% url 'users:index' %}">Back</a>

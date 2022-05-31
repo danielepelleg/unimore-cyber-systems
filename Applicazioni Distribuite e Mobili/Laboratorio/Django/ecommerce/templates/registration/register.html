@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% comment %}
+    Main page to register users.
+{% endcomment %}
+{% block head %}
+    <title>Django MySite | Register</title>
+{% endblock  %}
+{% block body %}
+    <header>
+        <h1>Django MySite</h1>
+        <h2>Register Page</h2>
+    </header>
+    <section>
+        <form method = "post">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ customer_form.as_p }}
+            <input type = "submit" value = "register">
+        </form>
+    </section>
+{% endblock %}
