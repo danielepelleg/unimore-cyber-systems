@@ -6,6 +6,7 @@ app_name = 'users'
 urlpatterns = [
     path('index/', views.index, name='index'),
     path('cart/<int:user_id>', views.cart_detail, name='cart_detail'), # show cart
+    path('api/cart/<int:user_id>', views.user_cart_api, name='user_cart_api'),
     path('cart/<int:user_id>/checkout', views.checkout, name='checkout'), # order
     path('cart/<int:user_id>/orders', views.OrderView.as_view(), name='orders'), # show orders
     path('cart/<int:user_id>/orders/<int:order_id>', views.order_detail, name='order_detail'), # order detail

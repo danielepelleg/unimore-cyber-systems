@@ -1,11 +1,13 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .forms import CustomerForm
 from .models import Cart, CartEntry, Customer, Order, OrderEntry
+from .serializers import CartSerializer
 import datetime
 
 # Create your views here.
@@ -81,3 +83,19 @@ def register(request):
         user_form = UserCreationForm()
         customer_form = CustomerForm()
         return render(request, 'registration/register.html', {'user_form': user_form, 'customer_form': customer_form})
+
+"""
+    API
+"""
+@csrf_exempt
+def user_cart_api(request, user_id):
+    print(request.user.id)
+    if request.method == 'GET':
+        cart = Cart.objects.get(user=user_id)
+        serializer = CartSerializer(cart)
+        print(serializer.data)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'DELETE':
+        cart = Cart.objects.get(user=user_id)
+        cart.delete()
+        return JsonResponse(None, status=204, safe=False)
