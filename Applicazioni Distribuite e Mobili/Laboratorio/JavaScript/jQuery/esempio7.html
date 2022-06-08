@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Esempi JQuery</title>
+	<script src="jquery-1.10.2.js"></script>
+	<style type="text/css">
+		li{
+		   list-style:square;
+		}
+	</style>
+</head>
+<body>
+	<h1>Prova JQuery</h1>
+
+		<ul>
+			<li><a href="" class="menu">Menu A</a> <ul style="display:none;"><li>Item 1</li><li>Item 2</li></ul></li>
+			<li><a href="" class="menu">Menu B</a> <ul style="display:none;"><li>Item 1</li><li>Item 2</li></ul></li>
+		</ul>
+	<script type="text/javascript" >
+		$("a.menu").click(function(){
+		  $(this).next().toggle();
+		  return false;
+		});
+  	</script>
+
+</body>
+</html>

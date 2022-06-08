@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Esempi JQuery</title>
+	<script src="jquery-1.10.2.js"></script>
+	<style type="text/css">
+		li{
+		   list-style:square;
+		}
+		div.block { margin-left: 36px; width: 100px; height: 100px; background: red; }
+	</style>
+</head>
+<body>
+	<h1>Prova JQuery</h1>
+	<button class="run">Run</button>
+	<div class="block">hello!</div>
+	<script type="text/javascript" >
+		$("button.run").click(function() {
+			$("div.block").hide("slow", function(){
+				$(this).show("slow");
+			})
+		});
+  	</script>
+
+</body>
+</html>
