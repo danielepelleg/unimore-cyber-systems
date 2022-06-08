@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>AJAX-based Calcolatrice</title>
+<script type="text/javascript" src="ajaxCalculator.js"></script>
+<head>
+<body>
+<h1>AJAX-based Calculator Example</h1>
+<form action="" method=GET>
+<input type=text name="a" id="a" />
+<input type=text name="b" id="b" />
+<input type="button" name="operazione" value="+" onClick="nextPhrase('somma')">
+<input type="button" name="operazione" value="-" onClick="nextPhrase('sottrazione')">
+<input type="button" name="operazione" value="*" onClick="nextPhrase('moltiplicazione')">
+<input type="button" name="operazione" value="/" onClick="nextPhrase('divisione')">
+</form>
+Risultato: <div id=res> </div><br>
+</body>
+</html>
