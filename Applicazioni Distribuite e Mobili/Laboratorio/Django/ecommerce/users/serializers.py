@@ -6,7 +6,7 @@ class ProductSerializer(ModelSerializer):
     category = CharField(source='get_category_display')
     class Meta:
         model = Product
-        fields = ['id', 'title', 'category','price']
+        fields = ['id', 'title', 'category', 'price', 'quantity']
 
 class CartEntrySerializer(ModelSerializer):
     product = ProductSerializer()

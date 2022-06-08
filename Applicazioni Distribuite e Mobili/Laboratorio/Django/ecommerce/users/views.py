@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from rest_framework.parsers import JSONParser
 from .forms import CustomerForm
 from .models import Cart, CartEntry, Customer, Order, OrderEntry
 from .serializers import CartSerializer
@@ -89,13 +90,27 @@ def register(request):
 """
 @csrf_exempt
 def user_cart_api(request, user_id):
-    print(request.user.id)
     if request.method == 'GET':
         cart = Cart.objects.get(user=user_id)
         serializer = CartSerializer(cart)
-        print(serializer.data)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'DELETE':
         cart = Cart.objects.get(user=user_id)
-        cart.delete()
+        cart.empty_cart()
         return JsonResponse(None, status=204, safe=False)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        cart = Cart.objects.get(user=user_id)
+        cart_entry = CartEntry.objects.get(cart=cart, product=data['product_id'])
+        cart_entry.update_quantity(data['quantity'])
+        serializer = CartSerializer(cart)
+        return JsonResponse(serializer.data, status=201, safe=False)
+
+@csrf_exempt
+def user_cart_product_api(request, cart_id, product_id):
+    if request.method == 'DELETE':
+        cart_entry = CartEntry.objects.get(cart = cart_id, product=product_id)
+        cart_entry.empty()
+        cart = Cart.objects.get(pk=cart_id)
+        serializer = CartSerializer(cart)
+        return JsonResponse(serializer.data, status=200, safe=False)

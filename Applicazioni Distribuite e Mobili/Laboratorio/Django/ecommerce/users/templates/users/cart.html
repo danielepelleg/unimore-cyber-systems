@@ -1,18 +1,44 @@
-<h1>{{user}}'s Cart</h1>
-<ul>
-{% for key,value in products.items %}
-    <li>
-        {{key}}     (x{{value}})
-    </li>
-{% endfor %}
-</ul>
-Created at: {{cart.created_at}}
-<br><br>
-Total: {{cart.total_cost}} €
-<br><br>
-<form action=" {% url 'users:checkout' user.id %} " method="post">
-    {% csrf_token %}
-    <button type="submit">Order</button>
-</form>
-<br><br>
-<a href="{% url 'users:index' %}">Back</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user}}'s Cart</title>
+</head>
+<body>
+    <h1>{{user}}'s Cart</h1>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.js" crossorigin="anonymous"></script>
+    <div id="products"></div>
+    <div id="message">
+
+    </div>
+    <script>const user_id = "{{ user.id }}";</script>
+    {% load static %}
+    <script src="{% static 'user_cart.js' %}"></script>
+        {% comment "" %}
+        // DJANGO HTML-JINJA TEMPLATE
+        <ul>
+        {% for key,value in products.items %}
+        <li>
+            {{key}}     (x{{value}})
+        </li>
+        {% endfor %}
+        </ul>
+        Created at: {{cart.created_at}}
+        <br><br>
+        Total: {{cart.total_cost}} €
+        <br><br>
+        <form action=" {% url 'users:checkout' user.id %} " method="post">
+            {% csrf_token %}
+            <button type="submit">Order</button>
+        </form>
+        <br><br>
+        <a href="{% url 'users:index' %}">Back</a>
+        {% endcomment %}
+    </br>
+    <a id="back_button" href="{% url 'users:index' %}">Back to Index</a>
+</body>
+</html>

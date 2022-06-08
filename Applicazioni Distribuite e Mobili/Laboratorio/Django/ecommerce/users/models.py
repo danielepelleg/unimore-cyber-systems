@@ -33,10 +33,16 @@ class Cart(models.Model):
     def total_cost(self):
         cost = 0
         for prod in self.products.all():
-            current_cart = CartEntry.objects.get(product=prod)
-            cost += (prod.price * current_cart.quantity)
+            entry = CartEntry.objects.get(product=prod)
+            cost += (prod.price * entry.quantity)
         return cost
-
+    
+    def empty_cart(self):
+        for prod in self.products.all():
+            entry = CartEntry.objects.get(product=prod)
+            entry.empty()
+        self.delete()
+    
 class CartEntry(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -47,6 +53,21 @@ class CartEntry(models.Model):
 
     def buy(self, new_quantity: int):
         self.product.quantity -= new_quantity
+        self.product.save()
+        super().save()
+
+    def empty(self):
+        self.product.quantity += self.quantity
+        self.product.save()
+        self.delete()
+    
+    def update_quantity(self, new_quantity: int):
+        if self.quantity > new_quantity:
+            self.product.quantity += self.quantity - new_quantity
+        elif self.quantity < new_quantity:
+            if new_quantity <= self.product.quantity:
+                self.product.quantity -= new_quantity - self.quantity
+        self.quantity = new_quantity
         self.product.save()
         super().save()
 
