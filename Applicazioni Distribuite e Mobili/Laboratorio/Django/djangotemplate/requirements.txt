@@ -1,0 +1,5 @@
+django
+python-dotenv
+Pillow
+djangorestframework
+django-cors-headers

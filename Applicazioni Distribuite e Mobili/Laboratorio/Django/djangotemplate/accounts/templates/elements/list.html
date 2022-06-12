@@ -1,0 +1,20 @@
+{% if elements_list %}
+<ul>
+    {% for element in elements_list %}
+    <li>
+        <a>{{element}}</a>
+        {% comment %} <a href=" {% url 'products:element_detail' element.id %} ">{{element.title}}</a> {% endcomment %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Elements are available.</p>
+{% endif %}
+
+<button onclick="goBack()">Go Back</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
