@@ -9,5 +9,4 @@ urlpatterns = [
     # API
     path('api/users' , views.users_list_api, name='users_list_api'),
     path('api/profiles', views.profiles_list_api, name='profiles_list_api'),
-    path('test/', views.test, name='test'),
 ]

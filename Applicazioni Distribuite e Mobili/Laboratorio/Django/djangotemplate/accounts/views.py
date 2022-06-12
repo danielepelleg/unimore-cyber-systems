@@ -24,9 +24,6 @@ def register(request):
         profile_form = ProfileForm()
         return render(request, 'registration/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
-def test(request):
-    return render(request, 'elements/empty.html')
-
 """
     REST API
 """
