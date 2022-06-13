@@ -34,7 +34,8 @@ renderFieldsList = (object, elementId) => {
         elementData += renderItem(nestedKey, nestedValue);
       });
       elementData += "</ul>";
-    } else elementData += renderItem(key, value);
+    } 
+    else elementData += renderItem(key, value);
   });
   return elementData;
 };
