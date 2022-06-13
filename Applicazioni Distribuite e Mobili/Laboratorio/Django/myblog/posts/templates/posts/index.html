@@ -1,9 +1,23 @@
 <h1>Index Page</h1>
 <ul>
-    <li>
-        <a href="{% url 'posts:insert_author' %}">Insert Author</a>
-    </li>
-    <li>
-        <a href="{% url 'posts:insert_article' %}">Insert Article</a>
-    </li>
+  {% comment %}
+  <li>
+    <a href="{% url 'posts:insert_author' %}">Insert Author</a>
+  </li>
+  {% endcomment %} {% if user.is_authenticated %}
+  <li>
+    <a href="{% url 'posts:insert_article' %}">Insert Article</a>
+  </li>
+  <li>
+    <a href="{% url 'posts:user_posts_list' user.id %}">User Posts List</a>
+  </li>
+  {% endif %}
+  <li>
+    <form method="POST" action="{% url 'posts:search' %}">
+      {% csrf_token %}
+      <label for="user_id">Search User's Posts by ID:</label>
+      <input type="text" name="user_id" id="">
+      <button type="submit">Search</button>
+    </form>
+  </li>
 </ul>

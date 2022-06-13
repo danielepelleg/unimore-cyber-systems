@@ -37,12 +37,16 @@ $> python manage.py runserver
 ```
 Navigate to: [localhost/admin](http://127.0.0.1:8000/admin) and login to start populate the database.
 
-It is possible to populate the database even by not creating a superuser, by going to [localhost/insertAuthor](http://127.0.0.1:8000/insertAuthor) to insert an Author Object, [localhost/insertArticle](http://127.0.0.1:8000/insertArticle)  to insert an Article.
+Register an User (Author) by navigating to: [localhost/accounts/registration](http://127.0.0.1:8000/accounts/registration) and then login at [localhost/accounts/login](http://127.0.0.1:8000/accounts/login). Once signed in you will be redirected to [localhost/myblog](http://127.0.0.1:8000/myblog).
+
+It is possible to insert an Article by navigating to [localhost/myblog/insertArticle](http://127.0.0.1:8000/insertArticle).
 
 
-5. Navigate to:
+5. Manually navigate to:
 - `localhost:8000/<int:author>/posts/<int:year>/<int:month>` 
 - `localhost:8000/<int:author>/posts/<int:year>/<int:month>/<int:post_id>` 
+- `localhost:8000/<int:author>/posts/<int:year>/<int:month>/jquery` 
+- `localhost:8000/<int:author>/posts/<int:year>/<int:month>/<int:post_id>/jquery` 
 
 
 

@@ -1,12 +1,9 @@
-<h1>Title: {{ article }}</h1>
-Content: {{ article.content }}
-<br>
-Pubblication Date: {{ article.pubblication_date }}
-<br>
-Authors:
+<h1>{{element}}</h1>
 <ul>
-{% for author in article.author.all  %}
-    <li> {{author}} </li>
-{% endfor %}
+  {% for key, value in element.get_fields_values %}
+  <li>{{ key|capfirst }}: {{value}}</li>
+  {% endfor %}
 </ul>
-<a href="{% url 'posts:posts_list' author year month %}"> Back </a>
+<br />
+
+<a href="{% url 'posts:posts_list_year_month' user_id year month %}"> Back </a>

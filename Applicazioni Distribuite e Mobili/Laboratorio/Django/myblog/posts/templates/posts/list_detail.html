@@ -1,0 +1,32 @@
+{% if elements_list %}
+<ul>
+  {% for element in elements_list %}
+  <li id="{{element.id}}">
+    <a>{{element.pubblication_date}}</a>
+    <br />
+    <button type="submit" onClick="deletePost({{element.id}})">DELETE</button>
+    <a href=" {% url 'posts:edit_post' element.id %} ">EDIT</a>
+    <a href=" {% url 'posts:detail' user_id year month element.id %} ">DETAIL</a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No posts are available.</p>
+{% endif %}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  crossorigin="anonymous"
+></script>
+<script>
+  deletePost = (elementId) => {
+    console.log(elementId);
+    $.ajax({
+      url: "/myblog/api/posts/" + elementId,
+      method: "DELETE",
+      success: function (data) {
+        $("#" + elementId).remove();
+      },
+    });
+  };
+</script>
+<a href=" {% url 'posts:index' %} ">Back to Index</a>
