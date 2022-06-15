@@ -1,0 +1,20 @@
+{% if elements_list %}
+<ul>
+    {% for element in elements_list %}
+    <li>
+        <a>{{element}}</a>
+        {% comment %} <a href=" {% url 'products:element_detail' element.id %} ">{{element.title}}</a> {% endcomment %}
+        <ul>
+            {% for key, value in element.get_fields_values %}
+                {% if key == 'id' or key == 'description' %}
+                    <li>{{ key|capfirst }}: {{value}}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Elements are available.</p>
+{% endif %}
+<a href="{% url 'products:index' %}">Back to Index</a>
