@@ -53,6 +53,7 @@ Create a new customer by going to: [localhost/accounts/registration](http://127.
 5. Integrate React Frontend
 
 Create (or move if you have one already) your React project in the Django project root folder. To better understand the next steps, we refer to it as `frontend` folder. Your project structure at this point should be:
+
 ```bash
 .
 ├── accounts
@@ -71,25 +72,31 @@ Create (or move if you have one already) your React project in the Django projec
 ├── static
 └── templates
 ```
+
 Move to your frontend folder and try to start your React project to see if it works with:
+
 ```bash
 $> npm start
 ```
+
 Now we need to build the package which the backend will make use of by running:
+
 ```bash
-$> npm build
+$> npm run build
 ```
+
 Then we also need to remove /build from the gitignore file since the backend would need to make use of the templates and staticfiles in the build folder.
 
 Now let's head to the backend setup and connect it to the react application we just created. Move to the root folder and navigate to `./djangotemplate/settings.py`. Here we have to edit two parameters in the configuration (using this template the lines will be already present but commented):
 
--  Configure the template directory by pointing it towards the build folder in our frontend react directory.
+- Configure the template directory by pointing it towards the build folder in our frontend react directory.
+
 ```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'), 
+            os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'frontend', 'build')], # <- add this
         'APP_DIRS': True,
         'OPTIONS': {
@@ -103,13 +110,17 @@ TEMPLATES = [
     },
 ]
 ```
+
 - Configure the static files directory as well
+
 ```python
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
     os.path.join(BASE_DIR, "static"),] # <- add this
 ```
+
 Open the views.py file and create a simple function-based view that just renders the page using the React Frontend.
+
 ```python
 def front(request):
     context = { }
