@@ -1,0 +1,17 @@
+<h1>{{element}}</h1>
+<ul>
+    {% for key, value in element.get_fields_values %}
+        <li>{{ key|capfirst }}: {{value}}</li>
+    {% endfor %}
+  </ul>
+</ul>
+<br />
+
+{% comment %} <a href=" {% url 'elements:elements_list' %} ">Back</a> {% endcomment %}
+<button onclick="goBack()">Go Back</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>

@@ -1,0 +1,13 @@
+{% if elements_list %}
+<ul>
+    {% for element in elements_list %}
+    <li>
+        <a><b>{{element}}</b></a>
+        {% comment %} <a href=" {% url 'products:element_detail' element.id %} ">{{element.title}}</a> {% endcomment %}
+        <p>Average Value: {{ element.average_value }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Elements are available.</p>
+{% endif %}
