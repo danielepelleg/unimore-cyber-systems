@@ -181,7 +181,7 @@ runtime_config:
 
 endpoints_api_service:
   name: [PROJECT_ID].appspot.com
-  rollout_startegy: managed
+  rollout_strategy: managed
 ```
 ## Pub Sub
 
