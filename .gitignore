@@ -53,3 +53,9 @@ dkms.conf
 
 # macOS Specific
 .DS_Store
+
+# Visual Studio
+/x64
+*.vcxproj
+*.filters
+*.user
