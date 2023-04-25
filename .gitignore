@@ -56,6 +56,6 @@ dkms.conf
 
 # Visual Studio
 /x64
-*.vcxproj
-*.filters
-*.user
+/x86
+/Debug
+/Release
