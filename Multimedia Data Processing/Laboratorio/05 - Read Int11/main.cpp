@@ -17,6 +17,16 @@ void syntax() {
 		"Ignore any excess bits in the last byte. \n");
 }
 
+template <typename T>
+std::istream& raw_read(std::istream &is, T &val, size_t size = sizeof(T)) {
+	return is.read(reinterpret_cast<char *>(&val), size);
+}
+
+template <typename T>
+std::ostream& raw_write(std::ostream &out, const T &val, size_t size = sizeof(T)) {
+	return out.write(reinterpret_cast<const char *>(&val), size);
+}
+
 class bitreader {
 private:
 	std::istream &is_;
@@ -35,7 +45,7 @@ private:
 
 public:
 	bitreader(std::istream &is) : is_(is), nbits_(0) {}
-	std::istream& read(uint32_t u, size_t n) {
+	std::istream& read(uint32_t &u, size_t n) {
 		u = 0;
 		while (n --> 0) {
 			u = (u << 1) | read_bit();
@@ -43,16 +53,6 @@ public:
 		return is_;
 	}
 };
-
-template <typename T>
-std::istream& raw_read(std::istream &is, T &val, size_t size=sizeof(T)) {
-	return is.read(reinterpret_cast<char *>(&val), size);
-}
-
-template <typename T>
-std::ostream& raw_write(std::ostream &out, T &val, size_t size=sizeof(T)) {
-	return out.write(reinterpret_cast<char *>(&val), size);
-}
 
 int main(int argc, char* argv[]) {
 	using namespace std;
