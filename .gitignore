@@ -59,3 +59,10 @@ dkms.conf
 /x86
 /Debug
 /Release
+*.tlog
+*.exe
+*.ilk
+*.pdb
+*.obj
+*.idb
+*.pdb
