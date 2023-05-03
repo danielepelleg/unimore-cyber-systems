@@ -1,8 +1,10 @@
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <array>
 #include <iomanip>
 #include <iterator>
+#include <cstdint>
 
 int error(const char *msg) {
 	std::cout << msg;
