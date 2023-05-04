@@ -44,7 +44,7 @@ struct frequency_counter {
 };
 
 template<typename T>
-std::ostream& raw_write(std::ostream &out, T &val, size_t size = sizeof(T)) {
+std::ostream& raw_write(std::ostream &out, const T &val, size_t size = sizeof(T)) {
 	return out.write(reinterpret_cast<const char*>(&val), size);
 }
 
@@ -63,6 +63,7 @@ class bitreader {
 			raw_read(is_, buffer_);
 			nbits_ = 8;
 		}
+		--nbits_;
 		return (buffer_ >> nbits_) & 1;
 	}
 
@@ -113,7 +114,7 @@ public:
 	}
 
 	void flush(uint32_t u = 0) {
-		while (nbits_ < 8) {
+		while (nbits_ > 0) {
 			write_bit(u);
 		}
 	}
@@ -136,7 +137,6 @@ void encode(const std::string &input, const std::string &output) {
 	uint32_t NumValues = v.size();
 	size_t range = MaxValue - MinValue + 1;
 	size_t num_bits = static_cast<size_t>(ceil(log2(range)));
-	size_t num_bits_2 = sizeof(range) * CHAR_BIT;
 
 	std::ofstream os(output, std::ios::binary); 
 	if (!os) {
@@ -174,7 +174,7 @@ void decode(const std::string &input, const std::string &output) {
 
 	br.read(MinValue, 32);
 	br.read(MaxValue, 32);
-	br.read(NumValue, 32);
+	br.read(NumValue, 32);\
 
 	size_t range = MaxValue - MinValue + 1;
 	size_t num_bits = static_cast<size_t>(ceil(log2(range)));
@@ -188,14 +188,12 @@ void decode(const std::string &input, const std::string &output) {
 		br.read(val, num_bits);
 		os << val + MinValue << "\n";
 	}
-
 }
 
 void syntax() {
 	error("SYNTAX:\n"
 		"huffman1 [c|d] <input file> <output file>\n");
 }
-
 
 int main(int argc, char* argv[]) {
 	using namespace std;
@@ -208,12 +206,11 @@ int main(int argc, char* argv[]) {
 		encode(argv[2], argv[3]);
 	}
 
-	if (operation == "d") {
+	else if (operation == "d") {
 		decode(argv[2], argv[3]);
 	}
 	else {
 		error("First parameter is wrong");
 	}
-
 	return EXIT_SUCCESS;
 }

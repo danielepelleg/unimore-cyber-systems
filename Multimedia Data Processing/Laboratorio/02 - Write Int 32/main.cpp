@@ -21,7 +21,7 @@ void syntax() {
 
 /*
 	Conversion char (1 Byte) to int32_t little endian (hex format)
-	0000.0000 0000.0000 0000.0000 t0111.1000 -> 78.00.00.00
+	0000.0000 0000.0000 0000.0000 0111.1000 -> 78.00.00.00
 */
 template<typename T>
 std::ostream& raw_write(std::ostream &out, const T &num, size_t size = sizeof(T)) {
