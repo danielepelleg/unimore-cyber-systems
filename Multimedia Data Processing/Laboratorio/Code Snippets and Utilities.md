@@ -147,6 +147,43 @@ struct frequency_counter {
 };
 ```
 
+### Generic with Template
+
+``` c++
+template<typename symT, typename countT = uin32_t>
+struct frequency_counter{
+    std::unordered_map<symT, countT> occurrencies_;
+    
+    void operator(const symT &sym){
+        ++occurencies_[symT];
+    }
+    
+    auto operator[](symT &sym){
+        return occurrencies_[symT];
+    }
+    
+    auto begin() { return occurencies_.begin(); }
+    auto begin() const { return occurencies_.begin(); }
+    auto end() { return occurencies_.end(); }
+    auto end() const { return occurencies_.end(); }
+    
+    double entropy(){
+        doube tot = 0.0;
+        for(const auto &x : occurencies_){
+            tot += x.second;
+        }
+        doubel H = 0.0;
+        for(const auto &x : occurrencies_){
+            double px = x.second / tot;
+            H += px * log2(px);
+        }
+        return -H;
+    }
+}
+```
+
+
+
 ## Huffman
 
 ```c++
@@ -344,6 +381,14 @@ public:
     char* rawdata() { return reinterpret_cast<char *>(data_.data()); }
     const char* rawdata() const { return reinterpret_cast<char *>(data_.data()); }
     
+}
+
+void flip(matrix<uint8_t> &img){
+    for(int r = 0; r < img.rows()/2; ++r){
+        for(c = 0; c < img.cols(); ++c){
+            std::swap(img(r,c), img(img.rows() - 1 - r, c));
+        }
+    }
 }
 ```
 
