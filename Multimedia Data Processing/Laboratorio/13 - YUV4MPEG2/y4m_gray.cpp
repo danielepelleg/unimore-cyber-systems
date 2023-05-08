@@ -23,16 +23,21 @@ bool y4m_extract_gray(const std::string &filename, std::vector<Matrix<uint8_t>> 
 		switch (tag) {
 		case 'W':
 			is >> width;
+			break;
 		case 'H':
 			is >> height;
+			break;
 		case 'C':
 			is >> chroma_subsampling;
+			break;
 		case 'I':
 			is >> interlacing;
+			break;
 		default:
 			// Ignore other cases
 			std::string dump;
 			is >> dump;
+			break;
 		}
 	}
 	if (!is || c != '\n') {
