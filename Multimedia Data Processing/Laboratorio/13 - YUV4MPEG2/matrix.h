@@ -3,21 +3,18 @@
 
 template<typename T>
 class Matrix {
+private:
 	int rows_, cols_;
 	std::vector<T> data_;
-
-	Matrix(int rows, int cols) {
-		rows_ = rows;
-		cols_ = cols;
-		data_ = data_(rows*cols);
-	}
+public:
+	Matrix(int rows, int cols) : rows_(rows), cols_(cols), data_(rows*cols) {}
 
 	// Getters
 	int rows() const { return rows_; }
 	int cols() const { return cols_; }
 	int size() const { return rows_ * cols_;  }
 	auto data() { return data_; }
-	const auto data const{ return data_; }
+	const auto data() const{ return data_; }
 
 	// Operators
 	T& operator[](int i){ return data_[i]; }
@@ -27,8 +24,8 @@ class Matrix {
 
 	// Raw
 	int rawsize() const { return rows_ * cols_ * sizeof(T); }
-	char* rawdata() { return reinterpret_cast<char*>(data_.data()); }
-	const char* rawdata() const { return reinterpret_cast<char *>(data_.data()); }
+	auto rawdata() { return reinterpret_cast<char*>(data_.data()); }
+	const auto rawdata() const { return reinterpret_cast<char *>(data_.data()); }
 
 	bool empty() { return rows_ == 0 && cols_ == 0; }
 	void resize(int r, int c) {
