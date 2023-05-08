@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\daniele\source\repos\unimore-cyber-systems\multimedia data processing\laboratorio\14 - mdct\main.cpp(66): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\daniele\source\repos\unimore-cyber-systems\multimedia data processing\laboratorio\14 - mdct\main.cpp(85): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  14 - MDCT.vcxproj -> C:\Users\Daniele\source\repos\unimore-cyber-systems\Multimedia Data Processing\Laboratorio\14 - MDCT\x64\Debug\mdct.exe
