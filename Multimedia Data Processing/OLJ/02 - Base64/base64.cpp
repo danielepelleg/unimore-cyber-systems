@@ -38,6 +38,31 @@ struct bitwriter {
 	}
 };
 
+struct bitreader {
+	uint8_t buffer_ = 0;
+	size_t nbits_ = 0;
+	std::istream& is_;
+
+	bitreader(std::istream &is) : is_(is) {}
+
+	uint8_t read_bit() {
+		if (nbits_ == 0) {
+			is_.read(reinterpret_cast<char *>(&buffer_), 1);
+			nbits_ = 8;
+		}
+		--nbits_;
+		return (buffer_ >> nbits_) & 1;
+	}
+
+	std::istream& read(uint8_t &u, size_t n) {
+		u = 0;
+		while (n-- > 0) {
+			u = (u << 1) | read_bit();
+		}
+		return is_;
+	}
+};
+
 char decodeChar(char c) {
 	// Base64 Array Symbols
 	const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -54,6 +79,15 @@ char decodeChar(char c) {
 	}
 
 	return static_cast<char>(pos);
+}
+
+char encodeChar(uint8_t val) {
+	const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+	if (val < base64_chars.size()) {
+		return base64_chars[val];
+	}
+	return '#'; // error
 }
 
 std::string base64_decode(const std::string& input) {
@@ -75,4 +109,23 @@ std::string base64_decode(const std::string& input) {
 	}
 	decoded = os.str();
 	return decoded;
+}
+
+std::string base64_encode(const std::string& input) {
+	std::stringstream stream(input);
+
+	uint8_t padding = 128;
+	size_t text_size = input.size();
+	while (text_size % 3 != 0) {
+		stream.write(reinterpret_cast<char *>(&padding), 1);
+		++text_size;
+	}
+
+	std::string output;
+	bitreader br(stream);
+	uint8_t value;
+	while (br.read(value, 6)) {
+		output.push_back(encodeChar(value));
+	}
+	return output;
 }
