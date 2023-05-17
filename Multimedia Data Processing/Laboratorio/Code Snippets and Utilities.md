@@ -4,10 +4,14 @@
     - [Bit Writer](#bit-writer)
     - [Bit Counter](#bit-counter)
   - [Frequency Counter](#frequency-counter)
+    - [Generic with Template](#generic-with-template)
   - [Huffman](#huffman)
     - [Encoding](#encoding)
     - [Decoding](#decoding)
-  - [Matrix](#matrix)
+  - [Huffman using Template](#huffman-using-template)
+    - [Encoding (HuffDiff)](#encoding-huffdiff)
+    - [Decoding (HuffDiff)](#decoding-huffdiff)
+    - [Matrix](#matrix)
 
 # Code Snippets and Utilities
 
@@ -21,7 +25,7 @@ std::istream &raw_read(std::istream &is, T &val, size_t size = sizeof(T)){
     return is.read(reinterpret_cast<char *> (&val), size);
 }
 
-class bitreader {
+struct bitreader {
     std::istream &is_;
     uint8_t buffer_;
     size_t nbits_;
@@ -34,7 +38,6 @@ class bitreader {
         --nbits_;
         return (buffer_ >> nbits_) & 1;
     }
-public:
     bitreader(std::istream &is) : is_(is), nbits_(0) {}
     
 	std::istream& read(uint32_t &u, size_t n){
@@ -57,7 +60,11 @@ public:
 ### Bit Writer
 
 ```c++
-class bitwriter {
+template <typename T>
+std::ostream &raw_write(std::ostream &out, const T &val, size_t size = sizeof(T)){
+    return os.write(reinterpret_cast<const char *>(&val), size);
+}
+struct bitwriter {
     std::ostream os_;
     uint_8t buffer_;
     size_t nbits_;
@@ -70,8 +77,6 @@ class bitwriter {
         }
         return os_
     }
-    
-public:
     bitwriter(std::ostream &os) : os_(os), nbits_(0) {}
     
     ~bitwriter(){
@@ -94,11 +99,6 @@ public:
     std::ostream& operator()(uint32_t u, size_t n){
         return write(u, n);
     }
-}
-
-template <typename T>
-std::ostream &raw_write(std::ostream &out, const T &val, size_t size = sizeof(T)){
-    return os.write(reinterpret_cast<const char *>(&val), size);
 }
 ```
 
@@ -289,6 +289,22 @@ void encode(const std::string &input, const std::string &output){
             c.second->code_ = code;
         }
     }
+    // Write output
+    os << "HUFFMAN1";
+    bitwriter bw(os);
+    bw(canon.size(), 8);
+    for (const auto &x : canon) {
+        bw(x.second->sym_, 8);
+        bw(x.second->len_, 5);
+        bw(x.second->code_, x.second->len_);
+    }
+    bw(v.size(), 32);
+    for (const auto &x : v) {
+        auto n = canon[x];
+        bw(n->code_, n->len_);
+    }
+    // Free memory
+    delete huff_root;
 }
 ```
 
@@ -296,6 +312,9 @@ void encode(const std::string &input, const std::string &output){
 
 ```c++
 void decode(std::string &input, std::string &output){
+    // Check header
+    std::string header(8, ' ');
+    raw_read(is, header[0], 8);
     uint32_t table_size;
     // read table_size
     struct triplet {
@@ -340,7 +359,224 @@ void decode(std::string &input, std::string &output){
 }
 ```
 
-## Matrix
+## Huffman using Template
+
+```c++
+template <typename T>
+struct huffman {
+	struct node {
+		T sym_;
+		size_t prob_;
+		node* left_ = nullptr;
+		node* right_ = nullptr;
+
+		node(const T& sym, size_t prob) :
+			sym_(sym), prob_(prob) {}
+		node(node* a, node *b) :
+			prob_(a->prob_ + b->prob_),
+			left_(a), right_(b) {}
+	};
+	struct pnode {
+		node* p_;
+		pnode(node* p) : p_(p) {}
+		operator node*() { return p_; }
+		bool operator<(const pnode& rhs) const {
+			return p_->prob_ > rhs.p_->prob_;
+		}
+	};
+	struct code {
+		T sym_;
+		uint32_t len_, val_;
+		bool operator<(const code& rhs) const {
+			return len_ < rhs.len_;
+		}
+	};
+
+	template <typename mapT>
+	void create_table(const mapT& map) {
+		std::vector<std::unique_ptr<node>> storage;
+		std::vector<pnode> vec;
+		for (const auto& x : map) {
+			node* n = new node(x.first, x.second);
+			storage.emplace_back(n);
+			vec.push_back(n);
+		}
+		std::sort(begin(vec), end(vec));
+
+		while (vec.size() > 1) {
+			// Take the two least probable nodes and remove them from the vec
+			pnode n1 = vec.back();
+			vec.pop_back();
+			pnode n2 = vec.back();
+			vec.pop_back();
+			// Combine them in a new node
+			pnode n = new node(n1, n2);
+			storage.emplace_back(n);
+			// Add the new node back into the vector in the correct position
+			auto it = lower_bound(begin(vec), end(vec), n);
+			vec.insert(it, n);
+		}
+		node* root = vec.back();
+
+		compute_lengths(root, 0);
+		sort(codes_table_.begin(), codes_table_.end());
+	}
+
+	void compute_lengths(const node* p, uint32_t len) {
+		if (p->left_ == nullptr) {
+			code c = { p->sym_, len, 0 };
+			codes_table_.push_back(c);
+		}
+		else {
+			compute_lengths(p->left_, len + 1);
+			compute_lengths(p->right_, len + 1);
+		}
+	}
+
+	void compute_canonical_codes() {
+		code cur = { 0, 0, 0 };
+		for (auto& x : codes_table_) {
+			x.val_ = cur.val_ <<= x.len_ - cur.len_;
+			cur.len_ = x.len_;
+			++cur.val_;
+		}
+	}
+
+	std::vector<code> codes_table_;
+};
+```
+
+### Encoding (HuffDiff)
+
+```c++
+void encode(const std::string& input, const std::string& output)
+{
+	mat<uint8_t> img;
+	if (!load_pam(img, input)) {
+		error("Failed to open input image.\n");
+	}
+
+	mat<int> diff(img.rows(), img.cols());
+	int prev = 0;
+	for (int r = 0; r < diff.rows(); ++r) {
+		for (int c = 0; c < diff.cols(); ++c) {
+			diff(r, c) = img(r, c) - prev;
+			prev = img(r, c);
+		}
+		prev = img(r, 0);
+	}
+
+	frequency_counter<int> f;
+	f = for_each(diff.begin(), diff.end(), f);
+#if defined(_MSC_VER) && defined(_DEBUG)
+	std::cout << f.entropy();
+#endif
+	huffman<int> h;
+	h.create_table(f);
+	h.compute_canonical_codes();
+
+	std::ofstream os(output, std::ios::binary);
+	if (!os) {
+		error("Cannot open output file\n");
+	}
+
+	os << "HUFFDIFF";
+	int Width = img.cols();
+	raw_write(os, Width);
+	int Height = img.rows();
+	raw_write(os, Height);
+	bitwriter bw(os);
+	bw(static_cast<uint32_t>(h.codes_table_.size()), 9);
+	for (const auto& x : h.codes_table_) {
+		bw(x.sym_, 9);
+		bw(x.len_, 5);
+	}
+	std::unordered_map<int, huffman<int>::code> search_map;
+	for (const auto& x : h.codes_table_) {
+		search_map[x.sym_] = x;
+	}
+	for (const auto& x : diff) {
+		auto hc = search_map[x];
+		bw(hc.val_, hc.len_);
+	}
+}
+```
+
+### Decoding (HuffDiff)
+
+```c++
+void decode(const std::string& input, const std::string& output)
+{
+	using namespace std;
+	ifstream is(input, ios::binary);
+	if (!is) {
+		error("Cannot open input file\n");
+	}
+
+	string MagicNumber(8, ' ');
+	raw_read(is, MagicNumber[0], 8);
+	if (MagicNumber != "HUFFDIFF") {
+		error("Wrong input format\n");
+	}
+
+	int Width, Height;
+	raw_read(is, Width);
+	raw_read(is, Height);
+	
+	bitreader br(is);
+	uint32_t tmp;
+	br.read(tmp, 9);
+	size_t TableEntries = tmp;
+
+	huffman<int> h;
+	for (size_t i = 0; i < TableEntries; ++i) {
+		huffman<int>::code t;
+		br.read(t.sym_, 9);
+		br.read(t.len_, 5);
+		h.codes_table_.push_back(t);
+	}
+	h.compute_canonical_codes();
+
+	mat<int> diff(Height, Width);
+
+	for (int r = 0; r < diff.rows(); ++r) {
+		for (int c = 0; c < diff.cols(); ++c) {
+			uint32_t len = 0, code = 0;
+			size_t pos = 0;
+			do {
+				while (h.codes_table_[pos].len_ > len) {
+					uint32_t bit;
+					br.read(bit, 1);
+					code = (code << 1) | bit;
+					++len;
+				}
+				if (code == h.codes_table_[pos].val_) {
+					break;
+				}
+				++pos;
+			} while (pos < h.codes_table_.size());
+			if (pos == h.codes_table_.size()) {
+				error("This shouldn't happen!\n");
+			}
+			diff(r, c) = h.codes_table_[pos].sym_;
+		}
+	}
+
+	mat<uint8_t> img(diff.rows(), diff.cols());
+	int prev = 0;
+	for (int r = 0; r < diff.rows(); ++r) {
+		for (int c = 0; c < diff.cols(); ++c) {
+			img(r, c) = diff(r, c) + prev;
+			prev = img(r, c);
+		}
+		prev = img(r, 0);
+	}
+
+	save_pam(img, output);
+}
+```
+
+### Matrix
 
 ```c++
 template<typename T>
