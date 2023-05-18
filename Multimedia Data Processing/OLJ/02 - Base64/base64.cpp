@@ -74,7 +74,7 @@ char decodeChar(char c) {
 
 	std::size_t pos = base64_chars.find(c);
 	if (pos == std::string::npos) {
-		std::cerr << "Carattere non valido in input: " << c << std::endl;
+		std::cerr << "Carattere non valido in input: " << (int)c << std::endl;
 		return static_cast<char>(0);
 	}
 
@@ -103,9 +103,7 @@ std::string base64_decode(const std::string& input) {
 	bitwriter bw(os);
 	for (size_t i = 0; i < encoded.length(); ++i) {
 		// Write using 6 bits
-		if (encoded[i] != 64) {
-			bw.write(encoded[i], 6);
-		}
+		bw.write(encoded[i], 6);
 	}
 	decoded = os.str();
 	return decoded;
