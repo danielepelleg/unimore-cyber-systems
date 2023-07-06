@@ -53,5 +53,5 @@ iptables -A FORWARD -p tcp --sport ftp-data -o eth2 -i eth1 -d local2 -s ftp.loc
 iptables -A FORWARD -i eth2 -o eth0 -s 192.168.100.0/24 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -o eth2 -i eth0 -d 192.168.100.0/24 -m state --state RELATED,ESTABLISHED -j ACCEPT
 # Allow remote1 to ssh into local1
-iptables -A FORWARD -p tcp --dport 2222 -i eth0 -o eth2 -s remote1 -d local1 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -p tcp --sport 2222 -o eth0 -i eth2 -d remote1 -s local1 -m state --state ESTABLISHED -j ACCEPT
+iptables -A FORWARD -p tcp --dport ssh -i eth0 -o eth2 -s remote1 -d local2 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -p tcp --sport ssh -o eth0 -i eth2 -d remote1 -s local2 -m state --state ESTABLISHED -j ACCEPT
