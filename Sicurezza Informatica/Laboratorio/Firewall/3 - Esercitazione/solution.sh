@@ -30,7 +30,7 @@ iptables -t nat -A PREROUTING -p tcp --dport 2222 -i eth0 -d this-firewall -j DN
 iptables -P FORWARD DROP  
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
-# Allow local2 to ssh this machine (firewall)
+# Allow local1 to ssh this machine (firewall)
 iptables -A INPUT -p tcp --dport ssh -i eth2 -s local1 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --sport ssh -o eth2 -d local1 -m state --state ESTABLISHED -j ACCEPT
 # Allow Internet to connect to www.local.it
