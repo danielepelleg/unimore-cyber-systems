@@ -14,4 +14,4 @@
 - Consentire le risposte di ftp.local.it a connessioni originate dal local2
 - Consentire a tutte le macchine nella LAN di inviare pacchetti verso macchine in Internet e di ricevere i pacchetti in risposta e correlati ai pacchetti inviati
 - Consentire alle macchine local1 e local2 di accedere a macchine in Internet condividendo  l'IP pubblico associato all'interfaccia eth0 di firewall
-- Consentire alla macchina remote1 di aprire una connessione TCP sulla porta 2222 della  macchina local2 utilizzando l'IP pubblico associato all'interfaccia eth2 di firewall come indirizzo di destinazione
+- Consentire alla macchina remote1 di aprire una connessione ssh sulla porta 2222 della  macchina local2 utilizzando l'IP pubblico associato all'interfaccia eth2 di firewall come indirizzo di destinazione
