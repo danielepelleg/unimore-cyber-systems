@@ -3,7 +3,7 @@
 - Utilizzare una policy di negazione implicita per tutti i pacchetti in transito su entrambi i firewall
 - Utilizzare una policy di negazione implicita per tutti i pacchetti in ingresso in entrambi i firewall
 - Utilizzare una policy di negazione implicita per tutti i pacchetti in uscita da entrambi i firewall
-- Consentire a local2 di aprire connessioni ssh verso il firewall
+- Consentire a local1 di aprire connessioni ssh verso il firewall
 - Consentire connessioni TCP sulla porta 80 da Internet verso il server web www.local.it
 - Consentire le risposte di www.local.it a connessioni originate da Internet
 - Consentire connessioni TCP sulla porta 80 da local2 verso il server web www.local.it
